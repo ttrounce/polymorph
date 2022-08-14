@@ -2,6 +2,8 @@
 
 using namespace poly::vk;
 
+// ------------------------- IMAGE -------------------------
+
 void poly::vk::create_image_view(context& context, image& image, VkFormat format, VkImageAspectFlags aspect_flags)
 {
 	VkImageViewCreateInfo info{ VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO };
@@ -23,7 +25,7 @@ void poly::vk::destroy_image(context& context, image& image)
 {
 	if (image.v_view != VK_NULL_HANDLE)
 	{
-		vkDestroyImageView(context.device.v_logical, image.v_view, VK_NULL_HANDLE)
+		vkDestroyImageView(context.device.v_logical, image.v_view, VK_NULL_HANDLE);
 	}
 	if (image.v_image != VK_NULL_HANDLE)
 	{
@@ -33,4 +35,8 @@ void poly::vk::destroy_image(context& context, image& image)
 	{
 		vkFreeMemory(context.device.v_logical, image.v_memory, VK_NULL_HANDLE);
 	}
+
+	image.v_view = VK_NULL_HANDLE;
+	image.v_image = VK_NULL_HANDLE;
+	image.v_memory = VK_NULL_HANDLE;
 }

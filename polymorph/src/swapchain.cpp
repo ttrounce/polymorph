@@ -7,6 +7,8 @@
 
 using namespace poly::vk;
 
+// ------------------------- UTILS -------------------------
+
 static VkSurfaceFormatKHR get_swap_surface_format(context& context, const std::vector<VkSurfaceFormatKHR>& formats)
 {
 	for (const auto& available : formats) {
@@ -47,6 +49,8 @@ static VkExtent2D get_swap_extent(context& context, const VkSurfaceCapabilitiesK
 		return actual_extent;
 	}
 }
+
+// ------------------------- SWAPCHAIN -------------------------
 
 void poly::vk::create_swapchain(context& context)
 {

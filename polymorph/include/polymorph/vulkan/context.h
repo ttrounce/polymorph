@@ -11,6 +11,11 @@
 
 namespace poly::vk
 {
+    struct pipeline
+    {
+
+    };
+
     struct image
     {
         VkImage v_image;

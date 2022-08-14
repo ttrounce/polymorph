@@ -18,10 +18,10 @@ namespace poly::vk
 
     struct queue_families
     {
-        uint32_t graphics;
-        uint32_t present;
-        uint32_t compute;
-        uint32_t transfer;
+        uint32_t graphics = -1;
+        uint32_t present = -1;
+        uint32_t compute = -1;
+        uint32_t transfer = -1;
 
         bool is_comprehensive()
         {
