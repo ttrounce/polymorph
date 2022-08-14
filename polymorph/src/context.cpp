@@ -24,6 +24,10 @@ void context::init(const std::string& app_name, const std::vector<const char*>& 
 
 void context::cleanup()
 {
+    for (auto view : swapchain.image_views) {
+        vkDestroyImageView(device.v_logical, view, nullptr);
+    }
+
     vkDestroySwapchainKHR(device.v_logical, swapchain.v_swapchain, VK_NULL_HANDLE);
     vkDestroyDevice(device.v_logical, VK_NULL_HANDLE);
     vkDestroySurfaceKHR(v_instance, v_surface, VK_NULL_HANDLE);

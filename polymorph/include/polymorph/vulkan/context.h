@@ -20,6 +20,7 @@ namespace poly::vk
         VkExtent2D           v_extent;
 
         std::vector<VkImage> images;
+        std::vector<VkImageView> image_views;
     };
 
     struct device
@@ -62,6 +63,7 @@ namespace poly::vk
     void create_physical_device (context&); // device.cpp
     void create_logical_device  (context&); // device.cpp
     void create_swapchain       (context&); // swapchain.cpp
+    void create_image_views     (context&); // swapchain.cpp
 
     void destroy_debug_messenger(context&); // instance.cpp
 }
