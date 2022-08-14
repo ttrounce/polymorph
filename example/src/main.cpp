@@ -14,10 +14,8 @@ int main()
 
     poly::vk::context context;
     context.init(WINDOW_TITLE, required_layers, required_device_extensions, window.handle);
-
-    poly::vk::pipeline pipe{};
-    create_render_pass(context, pipe);
     
+    poly::vk::pipeline pipe{};
     auto spec = poly::vk::graphics_pipeline_spec::default(context);
     create_graphics_pipeline(context, pipe, spec);
 

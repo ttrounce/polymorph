@@ -3,48 +3,6 @@
 
 using namespace poly::vk;
 
-void poly::vk::create_render_pass(context& context, pipeline& pipeline)
-{
-	VkAttachmentDescription color_attachment{};
-	color_attachment.format = context.swapchain.v_surface_format.format;
-	color_attachment.samples = VK_SAMPLE_COUNT_1_BIT;
-	color_attachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-	color_attachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
-	color_attachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-	color_attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-	color_attachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-	color_attachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-
-	VkAttachmentReference color_attachment_ref{};
-	color_attachment_ref.attachment = 0;
-	color_attachment_ref.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-
-	VkSubpassDescription subpass{};
-	subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
-	subpass.colorAttachmentCount = 1;
-	subpass.pColorAttachments = &color_attachment_ref;
-
-	VkRenderPassCreateInfo render_pass_info{};
-	render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
-	render_pass_info.attachmentCount = 1;
-	render_pass_info.pAttachments = &color_attachment;
-	render_pass_info.subpassCount = 1;
-	render_pass_info.pSubpasses = &subpass;
-
-	VkSubpassDependency dependency{};
-	dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
-	dependency.dstSubpass = 0;
-	dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-	dependency.srcAccessMask = 0;
-	dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-	dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-
-	render_pass_info.dependencyCount = 1;
-	render_pass_info.pDependencies = &dependency;
-
-	CHECK_VK(vkCreateRenderPass(context.device.v_logical, &render_pass_info, nullptr, &pipeline.v_render_pass));
-}
-
 void poly::vk::create_graphics_pipeline(context& context, pipeline& pipeline, graphics_pipeline_spec& spec)
 {
 	VkPipelineDynamicStateCreateInfo dynamic_state_info{};
@@ -145,7 +103,7 @@ void poly::vk::create_graphics_pipeline(context& context, pipeline& pipeline, gr
 	pipeline_info.stageCount = static_cast<uint32_t>(stage_infos.size());
 	pipeline_info.pStages = stage_infos.data();
 
-	pipeline_info.renderPass = pipeline.v_render_pass;
+	pipeline_info.renderPass = context.v_render_pass;
 	pipeline_info.layout = pipeline.v_layout;
 
 	pipeline_info.pVertexInputState = &vertex_input_info;
@@ -186,7 +144,6 @@ VkShaderModule poly::vk::create_shader_module(VkDevice device, const std::vector
 
 void poly::vk::destroy_pipeline(context& context, pipeline& pipeline)
 {
-	vkDestroyRenderPass(context.device.v_logical, pipeline.v_render_pass, VK_NULL_HANDLE);
 	vkDestroyPipelineLayout(context.device.v_logical, pipeline.v_layout, VK_NULL_HANDLE);
 	vkDestroyPipeline(context.device.v_logical, pipeline.v_pipeline, VK_NULL_HANDLE);
 }

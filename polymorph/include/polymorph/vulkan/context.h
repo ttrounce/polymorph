@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <glm/vec3.hpp>
 
 #include "utility.h"
 
@@ -18,6 +19,13 @@ namespace poly::vk
         VkDeviceMemory v_memory;
     };
 
+    struct framebuffer
+    {
+        VkFramebuffer buf;
+        // std::vector<VkImageView> attachments; // consider refs/pointers?
+        // VkRenderPass render_pass;
+    };
+
     struct swapchain // swapchain.cpp
     {
         VkSwapchainKHR           v_swapchain;
@@ -28,6 +36,8 @@ namespace poly::vk
 
         std::vector<VkImage>     images;
         std::vector<VkImageView> image_views;
+
+        std::vector<framebuffer> framebuffers;
     };
 
     struct device // device.cpp
@@ -51,9 +61,10 @@ namespace poly::vk
         VkInstance               v_instance;
         VkDebugUtilsMessengerEXT v_debug_messenger;
         VkSurfaceKHR             v_surface;
+        VkRenderPass             v_render_pass; // TODO: consider configurability
 
         device                   device {};
-        swapchain                swapchain{};
+        swapchain                swapchain {};
 
         void init(const std::string& app_name, const std::vector<const char*>& requested_layers, std::vector<const char*>& requested_device_extensions, GLFWwindow* glfw_window);
         void cleanup();
@@ -154,31 +165,36 @@ namespace poly::vk
     {
         VkPipeline       v_pipeline;
         VkPipelineLayout v_layout;
-        VkRenderPass     v_render_pass;
     };
                   
     // instance.cpp, core
     void create_instance(context&);                                      
     void create_debug_messenger(context&);                                      
     void destroy_debug_messenger(context&);                                      
-    void create_surface(context&);                                      
-                         
+    void create_surface(context&);
+
     // device.cpp, core
     void create_physical_device(context&);                                      
     void create_logical_device(context&);                                      
                 
     // swapchain.cpp, core
-    void create_swapchain(context&);                                      
-    void create_swap_image_views(context&);                                      
+    void create_swapchain(context&); 
+    void create_swap_image_views(context&);              
+    void create_render_pass(context&);
+    void create_swapchain_framebuffers(context&);
+
+    // framebuffer.cpp, generic
+    void create_framebuffer(context&, framebuffer&, VkRenderPass, const std::vector<VkImageView>, glm::uvec3);
+    void destroy_framebuffer(context&, framebuffer&);
                  
     // image.cpp, generic
+    void create_image(context&); // TODO: implement
     void create_image_view(context&, image&, VkFormat, VkImageAspectFlags);
     void destroy_image(context&, image&);                              
              
     // pipeline.cpp, generic
-    void create_render_pass(context&, pipeline&);
-    void create_graphics_pipeline(context&, pipeline&, graphics_pipeline_spec&); // only creates a very "default" pipeline, TODO: configuration                         
-    void create_raytracing_pipeline(context&, pipeline&);
+    void create_graphics_pipeline(context&, pipeline&, graphics_pipeline_spec&); // creates gfx pipeline to a spec                        
+    void create_raytracing_pipeline(context&, pipeline&); // TODO: implement
     void destroy_pipeline(context&, pipeline&);
     VkShaderModule create_shader_module(VkDevice, const std::vector<char>&);
 }

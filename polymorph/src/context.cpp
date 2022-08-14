@@ -20,11 +20,21 @@ void context::init(const std::string& app_name, const std::vector<const char*>& 
     create_physical_device(*this);
     create_logical_device(*this);
     create_swapchain(*this);
+    create_swap_image_views(*this);
+    create_render_pass(*this);
+    create_swapchain_framebuffers(*this);
 }
 
 void context::cleanup()
 {
-    for (auto view : swapchain.image_views) {
+    vkDestroyRenderPass(device.v_logical, v_render_pass, VK_NULL_HANDLE);
+
+    for (auto framebuf : swapchain.framebuffers)
+    {
+        destroy_framebuffer(*this, framebuf);
+    }
+    for (auto view : swapchain.image_views)
+    {
         vkDestroyImageView(device.v_logical, view, nullptr);
     }
 
