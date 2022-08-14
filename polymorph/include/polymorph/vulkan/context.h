@@ -11,6 +11,13 @@
 
 namespace poly::vk
 {
+    struct image
+    {
+        VkImage v_image;
+        VkImageView v_view;
+        VkDeviceMemory v_memory;
+    };
+
     struct swapchain
     {
         VkSwapchainKHR       v_swapchain;
@@ -56,14 +63,20 @@ namespace poly::vk
         std::vector<const char*> requested_layers;
         std::vector<const char*> requested_device_extensions;
     };
-
-    void create_instance        (context&); // instance.cpp
-    void create_debug_messenger (context&); // instance.cpp
-    void create_surface         (context&); // instance.cpp
-    void create_physical_device (context&); // device.cpp
-    void create_logical_device  (context&); // device.cpp
-    void create_swapchain       (context&); // swapchain.cpp
-    void create_image_views     (context&); // swapchain.cpp
-
-    void destroy_debug_messenger(context&); // instance.cpp
+                                                                                 
+    // Key:
+    // - core    => core to the context; called on init.
+    // - generic => generic function; called multiple times.                       // | TYPE    | DEFINED AT    |
+                                                                                   // |---------|---------------|
+    void create_instance         (context&);                                       // | core    | instance.cpp  |
+    void create_debug_messenger  (context&);                                       // | core    | instance.cpp  |
+    void create_surface          (context&);                                       // | core    | instance.cpp  |
+    void create_physical_device  (context&);                                       // | core    | device.cpp    |
+    void create_logical_device   (context&);                                       // | core    | device.cpp    |
+    void create_swapchain        (context&);                                       // | core    | swapchain.cpp |
+    void create_swap_image_views (context&);                                       // | core    | swapchain.cpp |
+    void create_image_view       (context&, image&, VkFormat, VkImageAspectFlags); // | generic | image.cpp     |
+                                                                                   // |---------|---------------|                            
+    void destroy_debug_messenger (context&);                                       // | core    | instance.cpp  |
+    void destroy_image           (context&, image&);                               // | generic | image.cpp     |
 }

@@ -103,23 +103,17 @@ void poly::vk::create_swapchain(context& context)
 	vkGetSwapchainImagesKHR(context.device.v_logical, context.swapchain.v_swapchain, &image_count, context.swapchain.images.data());
 }
 
-void poly::vk::create_image_views(context& context)
+void poly::vk::create_swap_image_views(context& context)
 {
 	context.swapchain.image_views.resize(context.swapchain.images.size());
 	
 	for (size_t i = 0; i < context.swapchain.images.size(); i++)
 	{
-		VkImageViewCreateInfo create_info{ VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO };
-		create_info.image = context.swapchain.images[i];
-		create_info.format = context.swapchain.v_surface_format.format;
-		create_info.viewType = VK_IMAGE_VIEW_TYPE_2D;
-		create_info.components = { VK_COMPONENT_SWIZZLE_IDENTITY, VK_COMPONENT_SWIZZLE_IDENTITY, VK_COMPONENT_SWIZZLE_IDENTITY, VK_COMPONENT_SWIZZLE_IDENTITY };
-		create_info.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-		create_info.subresourceRange.baseMipLevel = 0;
-		create_info.subresourceRange.levelCount = 1;
-		create_info.subresourceRange.baseArrayLayer = 0;
-		create_info.subresourceRange.layerCount = 1;
+		image dummy_image {}; // Use a dummy object
+		dummy_image.v_image = context.swapchain.images[i]; // Give it the image
 
-		CHECK_VK(vkCreateImageView(context.device.v_logical, &create_info, VK_NULL_HANDLE, &context.swapchain.image_views[i]));
+		create_image_view(context, dummy_image, context.swapchain.v_surface_format.format, VK_IMAGE_ASPECT_COLOR_BIT);
+
+		context.swapchain.image_views[i] = dummy_image.v_view; // Extract view
 	}
 }
