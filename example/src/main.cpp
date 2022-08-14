@@ -15,10 +15,15 @@ int main()
     poly::vk::context context;
     context.init(WINDOW_TITLE, required_layers, required_device_extensions, window.handle);
 
-    window.start([&]()
-    {
+    poly::vk::pipeline pipe{};
+    create_render_pass(context, pipe);
+    
+    auto spec = poly::vk::graphics_pipeline_spec::default(context);
+    create_graphics_pipeline(context, pipe, spec);
 
-    });
+    window.start([&](){});
+
+    destroy_pipeline(context, pipe);
     context.cleanup();
 
     return 0;
