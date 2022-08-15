@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include <vulkan/vulkan.hpp>
+#include <optional>
 
 #define CHECK_VK(expr)  { if((expr) != VK_SUCCESS) { print_error("Vulkan", #expr, __FILE__, __LINE__); } }
 #define ASSERT_VK(expr) { if(!(expr)) { print_error("Vulkan", #expr, __FILE__, __LINE__); } }
@@ -18,14 +19,14 @@ namespace poly::vk
 
     struct queue_families
     {
-        uint32_t graphics = -1;
-        uint32_t present = -1;
-        uint32_t compute = -1;
-        uint32_t transfer = -1;
+        std::optional<uint32_t> graphics;
+        std::optional<uint32_t> present;
+        std::optional<uint32_t> compute;
+        std::optional<uint32_t> transfer;
 
         bool is_comprehensive()
         {
-            return graphics != -1 && present != -1 && compute != -1 && transfer != -1;
+            return graphics.has_value() && present.has_value() && compute.has_value() && transfer.has_value();
         }
     };
 

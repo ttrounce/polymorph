@@ -68,17 +68,16 @@ void poly::vk::create_logical_device(context& context)
 {
     queue_families qf = get_queue_families(context.device.v_physical, context.v_surface);
 
-    context.device.graphics_queue_index = qf.graphics;
-    context.device.present_queue_index = qf.present;
-    context.device.compute_queue_index = qf.compute;
+    context.device.graphics_queue_index = qf.graphics.value();
+    context.device.present_queue_index = qf.present.value();
+    context.device.compute_queue_index = qf.compute.value();
 
     std::vector<VkDeviceQueueCreateInfo> queue_create_infos {};
-    std::set<uint32_t> unique_queue_families =
-    {
-        qf.graphics,
-        qf.present,
-        qf.compute
-    };
+    std::set<uint32_t> unique_queue_families = {};
+    if (qf.graphics.has_value()) unique_queue_families.insert(qf.graphics.value());
+    if (qf.present.has_value()) unique_queue_families.insert(qf.present.value());
+    if (qf.compute.has_value()) unique_queue_families.insert(qf.compute.value());
+    if (qf.transfer.has_value()) unique_queue_families.insert(qf.transfer.value());
 
      // Queues for each required capability.
      float queue_priority = 1.0f;
@@ -109,7 +108,7 @@ void poly::vk::create_logical_device(context& context)
  #endif
 
      CHECK_VK(vkCreateDevice(context.device.v_physical, &device_create_info, VK_NULL_HANDLE, &context.device.v_logical));
-     vkGetDeviceQueue(context.device.v_logical, qf.graphics, 0, &context.device.v_graphics_queue);
-     vkGetDeviceQueue(context.device.v_logical, qf.present,  0, &context.device.v_present_queue);
-     vkGetDeviceQueue(context.device.v_logical, qf.compute,  0, &context.device.v_compute_queue);
+     vkGetDeviceQueue(context.device.v_logical, qf.graphics.value(), 0, &context.device.v_graphics_queue);
+     vkGetDeviceQueue(context.device.v_logical, qf.present.value(),  0, &context.device.v_present_queue);
+     vkGetDeviceQueue(context.device.v_logical, qf.compute.value(),  0, &context.device.v_compute_queue);
 }

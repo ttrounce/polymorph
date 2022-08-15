@@ -40,10 +40,16 @@ namespace poly::vk
         std::vector<framebuffer> framebuffers;
     };
 
+    struct command_buffer
+    {
+        VkCommandBuffer buf;
+    };
+
     struct device // device.cpp
     {
         VkDevice                  v_logical;
         VkPhysicalDevice          v_physical;
+        VkCommandPool             v_command_pool;
                                   
         uint32_t                  graphics_queue_index;
         uint32_t                  present_queue_index;
@@ -65,6 +71,8 @@ namespace poly::vk
 
         device                   device {};
         swapchain                swapchain {};
+
+        command_buffer           graphics_command_buffer; // Q: could this be generalised?
 
         void init(const std::string& app_name, const std::vector<const char*>& requested_layers, std::vector<const char*>& requested_device_extensions, GLFWwindow* glfw_window);
         void cleanup();
@@ -166,6 +174,8 @@ namespace poly::vk
         VkPipeline       v_pipeline;
         VkPipelineLayout v_layout;
     };
+
+    // void create_context_instance();
                   
     // instance.cpp, core
     void create_instance(context&);                                      
@@ -182,6 +192,10 @@ namespace poly::vk
     void create_swap_image_views(context&);              
     void create_render_pass(context&);
     void create_swap_framebuffers(context&);
+
+    // command.cpp, core
+    void create_command_pool(context&);
+    void create_graphics_command_buffer(context&);
 
     // framebuffer.cpp, generic
     void create_framebuffer(context&, framebuffer&, VkRenderPass, const std::vector<VkImageView>, glm::uvec3);

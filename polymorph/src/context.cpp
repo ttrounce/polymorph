@@ -23,10 +23,13 @@ void context::init(const std::string& app_name, const std::vector<const char*>& 
     create_swap_image_views(*this);
     create_render_pass(*this);
     create_swap_framebuffers(*this);
+    create_command_pool(*this);
+    create_graphics_command_buffer(*this);
 }
 
 void context::cleanup()
 {
+    vkDestroyCommandPool(device.v_logical, device.v_command_pool, VK_NULL_HANDLE);
     vkDestroyRenderPass(device.v_logical, v_render_pass, VK_NULL_HANDLE);
 
     for (auto& framebuf : swapchain.framebuffers)
