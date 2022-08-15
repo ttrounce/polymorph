@@ -35,7 +35,7 @@ namespace poly::vk
     {
         VkSurfaceCapabilitiesKHR capabilities;
         std::vector<VkSurfaceFormatKHR> formats;
-		std::vector<VkPresentModeKHR> present_modes;
+        std::vector<VkPresentModeKHR> present_modes;
     };
 
     swapchain_support_details get_swapchain_support_details(const VkPhysicalDevice& device, const VkSurfaceKHR& surface);
