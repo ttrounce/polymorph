@@ -6,7 +6,7 @@ void poly::vk::create_framebuffer(context& context, framebuffer& framebuffer, Vk
 {
 	VkFramebufferCreateInfo info{ VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO };
 	info.renderPass = render_pass;
-	info.attachmentCount = attachments.size();
+	info.attachmentCount = static_cast<uint32_t>(attachments.size());
 	info.pAttachments = attachments.data();
 	info.width = dimensions.x;
 	info.height = dimensions.y;

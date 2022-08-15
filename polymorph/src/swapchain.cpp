@@ -164,7 +164,7 @@ void poly::vk::create_render_pass(context& context)
 	CHECK_VK(vkCreateRenderPass(context.device.v_logical, &render_pass_info, nullptr, &context.v_render_pass));
 }
 
-void poly::vk::create_swapchain_framebuffers(context& context)
+void poly::vk::create_swap_framebuffers(context& context)
 {
 	// Q: should we clear the framebuffers each time?
 	for (size_t i = 0; i < context.swapchain.image_views.size(); i++)

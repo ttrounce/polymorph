@@ -181,7 +181,7 @@ namespace poly::vk
     void create_swapchain(context&); 
     void create_swap_image_views(context&);              
     void create_render_pass(context&);
-    void create_swapchain_framebuffers(context&);
+    void create_swap_framebuffers(context&);
 
     // framebuffer.cpp, generic
     void create_framebuffer(context&, framebuffer&, VkRenderPass, const std::vector<VkImageView>, glm::uvec3);

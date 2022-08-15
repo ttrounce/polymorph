@@ -22,14 +22,14 @@ void context::init(const std::string& app_name, const std::vector<const char*>& 
     create_swapchain(*this);
     create_swap_image_views(*this);
     create_render_pass(*this);
-    create_swapchain_framebuffers(*this);
+    create_swap_framebuffers(*this);
 }
 
 void context::cleanup()
 {
     vkDestroyRenderPass(device.v_logical, v_render_pass, VK_NULL_HANDLE);
 
-    for (auto framebuf : swapchain.framebuffers)
+    for (auto& framebuf : swapchain.framebuffers)
     {
         destroy_framebuffer(*this, framebuf);
     }
