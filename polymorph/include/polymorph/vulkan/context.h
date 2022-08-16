@@ -1,5 +1,3 @@
-/// @file
-
 #pragma once
 
 #define GLFW_INCLUDE_VULKAN
@@ -224,21 +222,86 @@ namespace poly::vk
                   
 //  ----- Contextual -----
 
-    void create_instance(context& context);                                    
-    void create_debug_messenger(context& context);                                      
-    void destroy_debug_messenger(context& context);                                      
+    /*! @brief Creates the vulkan instance for the context.
+    *   @memberof context
+    *   @param[in,out] context The associated vulkan context wrapper.
+    *   @since Indev
+    */
+    void create_instance(context& context);              
+    
+    /*! @brief Creates the debug messenger for the given context.
+    *   @memberof context
+    *   @param[in,out] context The associated vulkan context wrapper.
+    *   @since Indev
+    */
+    void create_debug_messenger(context& context);
+
+    /*! @brief Destroys the debug messenger for the given context.
+    *   @memberof context
+    *   @param[in,out] context The associated vulkan context wrapper.
+    *   @since Indev
+    */
+    void destroy_debug_messenger(context& context);       
+
+    /*! @brief Creates a vulkan surface for the given context and window.
+    *   @memberof context
+    *   @param[in,out] context The associated vulkan context wrapper.
+    *   @since Indev
+    */
     void create_surface(context& context);
 
-    void create_physical_device(context& context);                                    
+    /*! @brief Retrieves a physical device to populate the @ref device wrapper.
+    *   @memberof device
+    *   @sa @ref context
+    *   @param[in,out] context The associated vulkan context wrapper.
+    *   @since Indev
+    */ 
+    void create_physical_device(context& context);          
+
+    /*! @brief Creates a logical device to populate the @ref device wrapper.
+    *   @memberof device
+    *   @sa @ref context
+    *   @param[in,out] context The associated vulkan context wrapper.
+    *   @since Indev
+    */
     void create_logical_device(context& context);  
+
+    /*! @brief Creates a VMA allocator object.
+    *   @memberof device
+    *   @sa @ref context
+    *   @param[in,out] context The associated vulkan context wrapper.
+    *   @since Indev
+    */
     void create_vma_allocator(context& context);
 
-    void create_swapchain(context& context);        
+    /*! @brief Creates the context swapchain wrapper and populates its contents.
+    *   @memberof swapchain
+    *   @sa @ref context
+    *   @param[in,out] context The associated vulkan context wrapper.
+    *   @since Indev
+    */
+    void create_swapchain(context& context);
+
+    /*! @brief Recreates the context swapchain and repopulates the wrapper contents.
+    *   @note Blocks while the window is minimized.
+    *   @memberof swapchain
+    *   @sa @ref context
+    *   @since Indev
+    */
     void recreate_swapchain(context& context);
+
+    /*! @brief Destroys the context swapchain wrapper and its contents.
+    *   @memberof swapchain
+    *   @sa @ref context
+    *   @param[in,out] context The associated vulkan context wrapper.
+    *   @since Indev
+    */
     void destroy_swapchain(context& context);
 
     /*! @brief Creates images views for the swapchain images of the given context.
     *   @memberof swapchain
+    *   @sa @ref image
+    *   @sa @ref context
     *   @param[in,out] context The associated vulkan context wrapper.
     *   @since Indev
     */
@@ -362,6 +425,7 @@ namespace poly::vk
     *   @memberof image
     *   @param[in] context The associated vulkan context wrapper.
     *   @param[in,out] img The image wrapper to store the image in.
+    *   @todo Implement.
     *   @since Indev
     */
     void create_image(const context& context,
