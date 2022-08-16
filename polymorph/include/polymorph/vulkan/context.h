@@ -14,7 +14,7 @@
 
 namespace poly::vk
 {
-    struct buffer
+    struct buffer // buffer.cpp
     {
         VkBuffer value;
         VmaAllocation allocation;

@@ -4,6 +4,7 @@ A work-in-progress vulkan-based framework for building personal games and other 
 
 ### Dependencies
 - Vulkan API
+- VulkanMemoryAllocator
 - GLFW
 
 ---
