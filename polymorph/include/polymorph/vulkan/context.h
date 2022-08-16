@@ -94,7 +94,17 @@ namespace poly::vk
         std::vector<const char*> requested_layers;
         std::vector<const char*> requested_device_extensions;
         
+        /*! @brief Initializes the context.
+        *   @param[in] app_name The application name provided to the vulkan instance.
+        *   @param[in] requested_layers The requested validation layers to be used with this vulkan instance.
+        *   @param[in] requested_device_extensions The requested device extensions to be used with this vulkan instance and the logical device.
+        *   @param[in] glfw_window The GLFW window handle.
+        */
         void init(const std::string& app_name, const std::vector<const char*>& requested_layers, std::vector<const char*>& requested_device_extensions, GLFWwindow* glfw_window);
+
+        /*! @brief Cleans up all context-bound vulkan objects.
+        *   @note Some other wrapper objects will require specific destruction.
+        */
         void cleanup();
     };
 
@@ -185,7 +195,7 @@ namespace poly::vk
         static gfx_pipeline_cfg default(context&);
     };
 
-    /// @brief A wrapper for several synchronisation objects pertaining to drawing frames.
+    /// @brief A wrapper for several synchronization objects pertaining to drawing frames.
     struct synchron // sync.cpp
     {
         std::vector<VkSemaphore> semas_image_available;
@@ -518,7 +528,7 @@ namespace poly::vk
     void end_frame(context&            context,
                    draw_state_context& draw_state_context);
 
-    /*! @brief Creates vulkan synchronisation objects needed to draw frames and populates the given sync object.
+    /*! @brief Creates vulkan synchronization objects needed to draw frames and populates the given sync object.
     *   @memberof synchron
     *   @param[in] context The associated vulkan context wrapper.
     *   @param[in,out] sync The sync object wrapper to create and populate.
@@ -529,7 +539,7 @@ namespace poly::vk
                          synchron&      sync,
                          uint32_t       max_syncs);
 
-    /*! @brief Destroys vulkan synchronisation objects in the given sync objectand resets handles to VK_NULL_HANDLE.
+    /*! @brief Destroys vulkan synchronization objects in the given sync objectand resets handles to VK_NULL_HANDLE.
     *   @memberof synchron
     *   @param[in] context The associated vulkan context wrapper.
     *   @param[in,out] sync The sync object wrapper to destroy the contents of.
