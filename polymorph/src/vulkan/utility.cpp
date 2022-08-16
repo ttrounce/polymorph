@@ -63,7 +63,7 @@ poly::vk::queue_families poly::vk::get_queue_families(VkPhysicalDevice device, V
     return qf;
 }
 
-poly::vk::swapchain_support_details poly::vk::get_swapchain_support_details(const VkPhysicalDevice& device, const VkSurfaceKHR& surface)
+poly::vk::swapchain_support_details poly::vk::get_swapchain_support_details(VkPhysicalDevice device, VkSurfaceKHR surface)
 {
     poly::vk::swapchain_support_details ssd {};
 

@@ -13,7 +13,7 @@ void poly::vk::create_command_pool(context& context)
 	CHECK_VK(vkCreateCommandPool(context.device.v_logical, &info, VK_NULL_HANDLE, &context.device.v_command_pool));
 }
 
-void poly::vk::create_command_buffer_set(context& context, command_buffer_set& buffers, VkCommandBufferLevel level, uint32_t count)
+void poly::vk::create_command_buffer_set(const context& context, command_buffer_set& buffers, VkCommandBufferLevel level, uint32_t count)
 {
 	VkCommandBufferAllocateInfo info{ VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO };
 	info.commandPool = context.device.v_command_pool;
@@ -30,7 +30,7 @@ void poly::vk::create_command_buffer_set(context& context, command_buffer_set& b
 	}
 }
 
-void poly::vk::begin_recording_commands(command_buffer& cmd_buf)
+void poly::vk::begin_recording_commands(const command_buffer& cmd_buf)
 {
 	VkCommandBufferBeginInfo info{ VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO };
 	info.flags = 0;
@@ -39,12 +39,12 @@ void poly::vk::begin_recording_commands(command_buffer& cmd_buf)
 	CHECK_VK(vkBeginCommandBuffer(cmd_buf.buf, &info));
 }
 
-void poly::vk::end_recording_commands(command_buffer& cmd_buf)
+void poly::vk::end_recording_commands(const command_buffer& cmd_buf)
 {
 	CHECK_VK(vkEndCommandBuffer(cmd_buf.buf));
 }
 
-void poly::vk::begin_render_pass(command_buffer& cmd_buf, VkRenderPass pass, const framebuffer& framebuffer, const VkExtent2D& extent)
+void poly::vk::begin_render_pass(const command_buffer& cmd_buf, VkRenderPass pass, const framebuffer& framebuffer, const VkExtent2D& extent)
 {
 	VkRenderPassBeginInfo info{ VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO };
 	info.renderPass = pass;
@@ -61,7 +61,7 @@ void poly::vk::begin_render_pass(command_buffer& cmd_buf, VkRenderPass pass, con
 	vkCmdBeginRenderPass(cmd_buf.buf, &info, VK_SUBPASS_CONTENTS_INLINE); // TODO: make configurable VK_SUBPASS_CONTENTS_???
 }
 
-void poly::vk::end_render_pass(command_buffer& cmd_buf)
+void poly::vk::end_render_pass(const command_buffer& cmd_buf)
 {
 	vkCmdEndRenderPass(cmd_buf.buf);
 }

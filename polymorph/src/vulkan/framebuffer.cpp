@@ -2,7 +2,7 @@
 
 using namespace poly::vk;
 
-void poly::vk::create_framebuffer(context& context, framebuffer& framebuffer, VkRenderPass render_pass, const std::vector<VkImageView>& attachments, glm::uvec3 dimensions)
+void poly::vk::create_framebuffer(const context& context, framebuffer& framebuffer, VkRenderPass render_pass, const std::vector<VkImageView>& attachments, const glm::uvec3& dimensions)
 {
     VkFramebufferCreateInfo info{ VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO };
     info.renderPass = render_pass;
@@ -15,7 +15,7 @@ void poly::vk::create_framebuffer(context& context, framebuffer& framebuffer, Vk
     CHECK_VK(vkCreateFramebuffer(context.device.v_logical, &info, VK_NULL_HANDLE, &framebuffer.buf))
 }
 
-void poly::vk::destroy_framebuffer(context& context, framebuffer& framebuffer)
+void poly::vk::destroy_framebuffer(const context& context, framebuffer& framebuffer)
 {
     vkDestroyFramebuffer(context.device.v_logical, framebuffer.buf, VK_NULL_HANDLE);
     framebuffer.buf = VK_NULL_HANDLE; // TODO: do this for all types

@@ -4,7 +4,7 @@ using namespace poly::vk;
 
 // ------------------------- IMAGE -------------------------
 
-void poly::vk::create_image_view(context& context, image& image, VkFormat format, VkImageAspectFlags aspect_flags)
+void poly::vk::create_image_view(const context& context, image& image, VkFormat format, VkImageAspectFlags aspect_flags)
 {
     VkImageViewCreateInfo info{ VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO };
     info.format = format;
@@ -21,22 +21,21 @@ void poly::vk::create_image_view(context& context, image& image, VkFormat format
     CHECK_VK(vkCreateImageView(context.device.v_logical, &info, VK_NULL_HANDLE, &image.v_view));
 }
 
-void poly::vk::destroy_image(context& context, image& image)
+void poly::vk::destroy_image(const context& context, image& image)
 {
     if (image.v_view != VK_NULL_HANDLE)
     {
         vkDestroyImageView(context.device.v_logical, image.v_view, VK_NULL_HANDLE);
+        image.v_view = VK_NULL_HANDLE;
     }
     if (image.v_image != VK_NULL_HANDLE)
     {
         vkDestroyImage(context.device.v_logical, image.v_image, VK_NULL_HANDLE);
+        image.v_image = VK_NULL_HANDLE;
     }
     if (image.v_memory != VK_NULL_HANDLE)
     {
         vkFreeMemory(context.device.v_logical, image.v_memory, VK_NULL_HANDLE);
+        image.v_memory = VK_NULL_HANDLE;
     }
-
-    image.v_view = VK_NULL_HANDLE;
-    image.v_image = VK_NULL_HANDLE;
-    image.v_memory = VK_NULL_HANDLE;
 }

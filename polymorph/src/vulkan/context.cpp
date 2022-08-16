@@ -30,11 +30,25 @@ void context::init(const std::string& app_name, const std::vector<const char*>& 
 void context::cleanup()
 {
     vkDestroyCommandPool(device.v_logical, device.v_command_pool, VK_NULL_HANDLE);
+    device.v_command_pool = VK_NULL_HANDLE;
+
     vkDestroyRenderPass(device.v_logical, v_render_pass, VK_NULL_HANDLE);
+    v_render_pass = VK_NULL_HANDLE;
+
     destroy_swapchain(*this);
+
     vmaDestroyAllocator(this->allocator);
+    allocator = VK_NULL_HANDLE;
+
     vkDestroyDevice(device.v_logical, VK_NULL_HANDLE);
+    device.v_logical = VK_NULL_HANDLE;
+
     vkDestroySurfaceKHR(v_instance, v_surface, VK_NULL_HANDLE);
+    v_surface = VK_NULL_HANDLE;
+
     destroy_debug_messenger(*this);
+    v_debug_messenger = VK_NULL_HANDLE;
+
     vkDestroyInstance(v_instance, VK_NULL_HANDLE);
+    v_instance = VK_NULL_HANDLE;
 }

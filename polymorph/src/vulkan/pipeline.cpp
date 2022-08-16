@@ -3,7 +3,7 @@
 
 using namespace poly::vk;
 
-void poly::vk::create_graphics_pipeline(context& context, pipeline& pipeline, gfx_pipeline_cfg& spec)
+void poly::vk::create_graphics_pipeline(const context& context, pipeline& pipeline, const gfx_pipeline_cfg& spec)
 {
     VkPipelineDynamicStateCreateInfo dynamic_state_info{};
     dynamic_state_info.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
@@ -125,7 +125,7 @@ void poly::vk::create_graphics_pipeline(context& context, pipeline& pipeline, gf
     pipeline.v_bind_point = VK_PIPELINE_BIND_POINT_GRAPHICS;
 }
 
-void poly::vk::create_raytracing_pipeline(context&, pipeline&)
+void poly::vk::create_raytracing_pipeline(const context&, pipeline& pipeline)
 {
 
 }
@@ -144,10 +144,12 @@ VkShaderModule poly::vk::create_shader_module(VkDevice device, const std::vector
 }
 
 
-void poly::vk::destroy_pipeline(context& context, pipeline& pipeline)
+void poly::vk::destroy_pipeline(const context& context, pipeline& pipeline)
 {
     vkDestroyPipelineLayout(context.device.v_logical, pipeline.v_layout, VK_NULL_HANDLE);
+    pipeline.v_layout = VK_NULL_HANDLE;
     vkDestroyPipeline(context.device.v_logical, pipeline.v_pipeline, VK_NULL_HANDLE);
+    pipeline.v_pipeline = VK_NULL_HANDLE;
 }
 
 gfx_pipeline_cfg gfx_pipeline_cfg::default(context& context)

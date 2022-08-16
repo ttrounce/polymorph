@@ -260,56 +260,56 @@ namespace poly::vk
 
     void destroy_buffer(
         const context& context,
-        const buffer& buf);
+        buffer& buf);
 
 //  framebuffer.cpp
     void create_framebuffer(
-        context& context,
+        const context& context,
         framebuffer& framebuffer,
         VkRenderPass renderpass,
         const std::vector<VkImageView>& attachments,
-        glm::uvec3 dimensions);
+        const glm::uvec3& dimensions);
 
     void destroy_framebuffer(
-        context& context,
+        const context& context,
         framebuffer& framebuffer);
                  
 //  image.cpp
     void create_image(
-        context& context,
+        const context& context,
         image& img); // TODO: implement
 
     void create_image_view(
-        context& context,
+        const context& context,
         image& img,
         VkFormat format,
         VkImageAspectFlags flags);
 
     void destroy_image(
-        context& context,
+        const context& context,
         image& img);
      
 //  command.cpp
     void create_command_buffer_set(
-        context& context,
+        const context& context,
         command_buffer_set& command_buffer_set,
         VkCommandBufferLevel buffer_level,
         uint32_t count);
 
     void begin_recording_commands(
-        command_buffer& command_buffer); 
+        const command_buffer& command_buffer); 
 
     void end_recording_commands(
-        command_buffer& command_buffer);
+        const command_buffer& command_buffer);
 
     void begin_render_pass(
-        command_buffer& command_buffer,
+        const command_buffer& command_buffer,
         VkRenderPass renderpass,
         const framebuffer& framebuffer,
         const VkExtent2D& extent);
 
     void end_render_pass(
-        command_buffer& command_buffer);
+        const command_buffer& command_buffer);
 
     void begin_frame(
         context& context, 
@@ -319,27 +319,28 @@ namespace poly::vk
         context& context,
         draw_state_context& draw_state_context);
 
+//  sync.cpp
     void create_synchron(
-        context& context,
+        const context& context,
         synchron& sync,
         uint32_t max_syncs);
 
     void destroy_synchron(
-        context& context,
+        const context& context,
         synchron& sync);
 
 //  pipeline.cpp
     void create_graphics_pipeline(
-        context& context,
+        const context& context,
         pipeline& pipeline,
-        gfx_pipeline_cfg& spec);                  
+        const gfx_pipeline_cfg& spec);                  
 
     void create_raytracing_pipeline(
-        context& context,
+        const context& context,
         pipeline& pipeline); // TODO: implement
 
     void destroy_pipeline(
-        context& context,
+        const context& context,
         pipeline& pipeline);
 
     VkShaderModule create_shader_module(

@@ -74,7 +74,9 @@ void poly::vk::copy_buffer(const context& context, VkBuffer src, VkBuffer dst, V
 	vkFreeCommandBuffers(context.device.v_logical, context.device.v_command_pool, 1, &buf);
 }
 
-void poly::vk::destroy_buffer(const context& context, const buffer& buf)
+void poly::vk::destroy_buffer(const context& context, buffer& buf)
 {
 	vmaDestroyBuffer(context.allocator, buf.value, buf.allocation);
+	buf.allocation = VK_NULL_HANDLE;
+	buf.value = VK_NULL_HANDLE;
 }

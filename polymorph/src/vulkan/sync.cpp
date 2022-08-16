@@ -2,7 +2,7 @@
 
 using namespace poly::vk;
 
-void poly::vk::create_synchron(context& context, synchron& syncs, uint32_t count)
+void poly::vk::create_synchron(const context& context, synchron& syncs, uint32_t count)
 {
 	syncs.semas_image_available.resize(count);
 	syncs.semas_render_finished.resize(count);
@@ -23,18 +23,21 @@ void poly::vk::create_synchron(context& context, synchron& syncs, uint32_t count
 	}
 }
 
-void poly::vk::destroy_synchron(context& context, synchron& sync)
+void poly::vk::destroy_synchron(const context& context, synchron& sync)
 {
 	for (auto& sema : sync.semas_image_available)
 	{
 		vkDestroySemaphore(context.device.v_logical, sema, VK_NULL_HANDLE);
 	}
+	sync.semas_image_available.clear();
 	for (auto& sema : sync.semas_render_finished)
 	{
 		vkDestroySemaphore(context.device.v_logical, sema, VK_NULL_HANDLE);
 	}
+	sync.semas_render_finished.clear();
 	for (auto& fence : sync.fences_in_flight)
 	{
 		vkDestroyFence(context.device.v_logical, fence, VK_NULL_HANDLE);
 	}
+	sync.fences_in_flight.clear();
 }

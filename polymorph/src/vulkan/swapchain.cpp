@@ -141,6 +141,7 @@ void poly::vk::destroy_swapchain(context& context)
     context.swapchain.images.clear();
 
     vkDestroySwapchainKHR(context.device.v_logical, context.swapchain.v_swapchain, nullptr);
+    context.swapchain.v_swapchain = VK_NULL_HANDLE;
 }
 
 void poly::vk::create_swap_image_views(context& context)

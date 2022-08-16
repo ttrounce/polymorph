@@ -40,7 +40,7 @@ namespace poly::vk
         std::vector<VkPresentModeKHR> present_modes;
     };
 
-    swapchain_support_details get_swapchain_support_details(const VkPhysicalDevice& device, const VkSurfaceKHR& surface);
+    swapchain_support_details get_swapchain_support_details(VkPhysicalDevice device, VkSurfaceKHR surface);
 
     uint32_t find_memory_type(VkPhysicalDevice device, uint32_t type_filter, VkMemoryPropertyFlags memory_props);
 }
