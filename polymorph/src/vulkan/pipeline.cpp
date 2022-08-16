@@ -3,7 +3,7 @@
 
 using namespace poly::vk;
 
-void poly::vk::create_graphics_pipeline(context& context, pipeline& pipeline, graphics_pipeline_spec& spec)
+void poly::vk::create_graphics_pipeline(context& context, pipeline& pipeline, gfx_pipeline_cfg& spec)
 {
     VkPipelineDynamicStateCreateInfo dynamic_state_info{};
     dynamic_state_info.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
@@ -121,6 +121,8 @@ void poly::vk::create_graphics_pipeline(context& context, pipeline& pipeline, gr
     {
         vkDestroyShaderModule(context.device.v_logical, stage.module, nullptr);
     }
+
+    pipeline.v_bind_point = VK_PIPELINE_BIND_POINT_GRAPHICS;
 }
 
 void poly::vk::create_raytracing_pipeline(context&, pipeline&)
@@ -148,9 +150,9 @@ void poly::vk::destroy_pipeline(context& context, pipeline& pipeline)
     vkDestroyPipeline(context.device.v_logical, pipeline.v_pipeline, VK_NULL_HANDLE);
 }
 
-graphics_pipeline_spec graphics_pipeline_spec::default(context& context)
+gfx_pipeline_cfg gfx_pipeline_cfg::default(context& context)
 {
-    graphics_pipeline_spec spec = {};
+    gfx_pipeline_cfg spec = {};
 
     spec.dynamic_states = { VK_DYNAMIC_STATE_VIEWPORT, VK_DYNAMIC_STATE_SCISSOR };
     spec.vertex_input = { {}, {} };

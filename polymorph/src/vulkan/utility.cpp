@@ -19,7 +19,7 @@ std::vector<const char*> poly::vk::get_glfw_extensions()
     return extensions;
 }
 
-poly::vk::queue_families poly::vk::get_queue_families(const VkPhysicalDevice& device, const VkSurfaceKHR& surface)
+poly::vk::queue_families poly::vk::get_queue_families(VkPhysicalDevice device, VkSurfaceKHR surface)
 {
     poly::vk::queue_families qf {};
 
@@ -87,4 +87,17 @@ poly::vk::swapchain_support_details poly::vk::get_swapchain_support_details(cons
     }
 
     return ssd;
+}
+
+uint32_t poly::vk::find_memory_type(VkPhysicalDevice device, uint32_t type_filter, VkMemoryPropertyFlags memory_props)
+{
+    VkPhysicalDeviceMemoryProperties mem_props{};
+    vkGetPhysicalDeviceMemoryProperties(device, &mem_props);
+
+    for (uint32_t i = 0; i < mem_props.memoryTypeCount; i++) {
+        if (type_filter & (1 << i) && (mem_props.memoryTypes[i].propertyFlags & memory_props) == memory_props) {
+            return i;
+        }
+    }
+    THROW_VK("failed to find memory type");
 }

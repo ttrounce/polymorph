@@ -1,8 +1,8 @@
 #version 460
 
-out layout(location=0) vec4 frag;
+layout(location = 0) in vec3 p_frag_color;
+layout(location = 0) out vec4 out_color;
 
-void main()
-{
-    frag = vec4(1.0, 1.0, 1.0, 1.0);
+void main() {
+    out_color = vec4(p_frag_color, 1.0);
 }

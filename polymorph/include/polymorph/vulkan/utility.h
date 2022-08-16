@@ -12,6 +12,7 @@
 
 #define CHECK_VK(expr)  { if((expr) != VK_SUCCESS) { print_error("Vulkan", #expr, __FILE__, __LINE__); } }
 #define ASSERT_VK(expr) { if(!(expr)) { print_error("Vulkan", #expr, __FILE__, __LINE__); } }
+#define THROW_VK(error_msg) { printf("Vulkan error @ (file: %s, line: %d): %s\n", __FILE__, __LINE__, error_msg); throw std::runtime_error(error_msg); }
 
 namespace poly::vk
 {
@@ -30,7 +31,7 @@ namespace poly::vk
         }
     };
 
-    queue_families get_queue_families(const VkPhysicalDevice& device, const VkSurfaceKHR& surface);
+    queue_families get_queue_families(VkPhysicalDevice device, VkSurfaceKHR surface);
 
     struct swapchain_support_details
     {
@@ -40,4 +41,6 @@ namespace poly::vk
     };
 
     swapchain_support_details get_swapchain_support_details(const VkPhysicalDevice& device, const VkSurfaceKHR& surface);
+
+    uint32_t find_memory_type(VkPhysicalDevice device, uint32_t type_filter, VkMemoryPropertyFlags memory_props);
 }

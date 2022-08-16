@@ -79,28 +79,28 @@ void poly::vk::create_logical_device(context& context)
     if (qf.compute.has_value()) unique_queue_families.insert(qf.compute.value());
     if (qf.transfer.has_value()) unique_queue_families.insert(qf.transfer.value());
 
-     // Queues for each required capability.
-     float queue_priority = 1.0f;
-     for(uint32_t qfam : unique_queue_families)
-     {
-         printf("Creating queue from family #%d\n", qfam);
-         VkDeviceQueueCreateInfo q_create_info {VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO};
-         q_create_info.queueFamilyIndex = qfam;
-         q_create_info.queueCount = 1;
-         q_create_info.pQueuePriorities = &queue_priority;
-         q_create_info.flags = 0;
-         queue_create_infos.push_back(q_create_info);
-     }
+    // Queues for each required capability.
+    float queue_priority = 1.0f;
+    for(uint32_t qfam : unique_queue_families)
+    {
+        printf("Creating queue from family #%d\n", qfam);
+        VkDeviceQueueCreateInfo q_create_info {VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO};
+        q_create_info.queueFamilyIndex = qfam;
+        q_create_info.queueCount = 1;
+        q_create_info.pQueuePriorities = &queue_priority;
+        q_create_info.flags = 0;
+        queue_create_infos.push_back(q_create_info);
+    }
   
-     VkPhysicalDeviceFeatures pd_features {};
-     VkDeviceCreateInfo device_create_info {VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO};
-     device_create_info.queueCreateInfoCount = static_cast<uint32_t>(queue_create_infos.size());
-     device_create_info.pQueueCreateInfos = queue_create_infos.data();
+    VkPhysicalDeviceFeatures pd_features {};
+    VkDeviceCreateInfo device_create_info {VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO};
+    device_create_info.queueCreateInfoCount = static_cast<uint32_t>(queue_create_infos.size());
+    device_create_info.pQueueCreateInfos = queue_create_infos.data();
   
-     device_create_info.pEnabledFeatures = &pd_features;
+    device_create_info.pEnabledFeatures = &pd_features;
 
-     device_create_info.enabledExtensionCount = static_cast<uint32_t>(context.requested_device_extensions.size());
-     device_create_info.ppEnabledExtensionNames = context.requested_device_extensions.data();
+    device_create_info.enabledExtensionCount = static_cast<uint32_t>(context.requested_device_extensions.size());
+    device_create_info.ppEnabledExtensionNames = context.requested_device_extensions.data();
 
  #ifdef POLYMORPH_VULKAN_USE_VALIDATION
      device_create_info.enabledLayerCount = static_cast<uint32_t>(context.requested_layers.size());
@@ -111,4 +111,15 @@ void poly::vk::create_logical_device(context& context)
      vkGetDeviceQueue(context.device.v_logical, qf.graphics.value(), 0, &context.device.v_graphics_queue);
      vkGetDeviceQueue(context.device.v_logical, qf.present.value(),  0, &context.device.v_present_queue);
      vkGetDeviceQueue(context.device.v_logical, qf.compute.value(),  0, &context.device.v_compute_queue);
+}
+
+void poly::vk::create_vma_allocator(context& context)
+{
+    VmaAllocatorCreateInfo allocator_info{};
+    allocator_info.vulkanApiVersion = VK_API_VERSION_1_2;
+    allocator_info.physicalDevice = context.device.v_physical;
+    allocator_info.device = context.device.v_logical;
+    allocator_info.instance = context.v_instance;
+        
+    CHECK_VK(vmaCreateAllocator(&allocator_info, &context.allocator));
 }

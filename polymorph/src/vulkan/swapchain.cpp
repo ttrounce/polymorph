@@ -107,6 +107,42 @@ void poly::vk::create_swapchain(context& context)
     vkGetSwapchainImagesKHR(context.device.v_logical, context.swapchain.v_swapchain, &image_count, context.swapchain.images.data());
 }
 
+void poly::vk::recreate_swapchain(context& context)
+{
+    int width = 0, height = 0;
+    glfwGetFramebufferSize(context.glfw_window, &width, &height);
+
+    while (width == 0 || height == 0)
+    {
+        glfwGetFramebufferSize(context.glfw_window, &width, &height);
+        glfwWaitEvents();
+    }
+
+    vkDeviceWaitIdle(context.device.v_logical);
+
+    destroy_swapchain(context);
+
+    create_swapchain(context);
+    create_swap_image_views(context);
+    create_swap_framebuffers(context);
+}
+
+void poly::vk::destroy_swapchain(context& context)
+{
+    for (size_t i = 0; i < context.swapchain.framebuffers.size(); i++) {
+        vkDestroyFramebuffer(context.device.v_logical, context.swapchain.framebuffers[i].buf, nullptr);
+    }
+    context.swapchain.framebuffers.clear();
+
+    for (size_t i = 0; i < context.swapchain.image_views.size(); i++) {
+        vkDestroyImageView(context.device.v_logical, context.swapchain.image_views[i], nullptr);
+    }
+    context.swapchain.image_views.clear();
+    context.swapchain.images.clear();
+
+    vkDestroySwapchainKHR(context.device.v_logical, context.swapchain.v_swapchain, nullptr);
+}
+
 void poly::vk::create_swap_image_views(context& context)
 {
     context.swapchain.image_views.resize(context.swapchain.images.size());

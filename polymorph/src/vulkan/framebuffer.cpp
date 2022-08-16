@@ -2,7 +2,7 @@
 
 using namespace poly::vk;
 
-void poly::vk::create_framebuffer(context& context, framebuffer& framebuffer, VkRenderPass render_pass, const std::vector<VkImageView> attachments, glm::uvec3 dimensions)
+void poly::vk::create_framebuffer(context& context, framebuffer& framebuffer, VkRenderPass render_pass, const std::vector<VkImageView>& attachments, glm::uvec3 dimensions)
 {
     VkFramebufferCreateInfo info{ VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO };
     info.renderPass = render_pass;
