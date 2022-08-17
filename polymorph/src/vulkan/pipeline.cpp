@@ -152,7 +152,7 @@ void poly::vk::destroy_pipeline(const context& context, pipeline& pipeline)
     pipeline.v_pipeline = VK_NULL_HANDLE;
 }
 
-gfx_pipeline_cfg gfx_pipeline_cfg::default(context& context)
+gfx_pipeline_cfg gfx_pipeline_cfg::default(const context& context)
 {
     gfx_pipeline_cfg spec = {};
 
