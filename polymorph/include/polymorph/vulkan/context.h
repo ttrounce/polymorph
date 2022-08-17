@@ -192,7 +192,13 @@ namespace poly::vk
         };
         std::vector<shader_stage> shader_stages;
 
-        static gfx_pipeline_cfg default(context&);
+        /*! @brief Creates a pre-configured graphics pipeline config.
+        *   @static
+        *   @sa @ref pipeline
+        *   @param[in] context The associated vulkan context wrapper.
+        *   @since Indev
+        */
+        static gfx_pipeline_cfg default(const context& context);
     };
 
     /// @brief A wrapper for several synchronization objects pertaining to drawing frames.
@@ -578,8 +584,8 @@ namespace poly::vk
                           pipeline&      pipeline);
 
     /*! @brief Creates a VKShaderModule handle using the given SPIR-V source
-    *   @return VkShaderModule handle.
-    *   @param[in] device VkDevice google.com handle.
+    *   @return A VkShaderModule handle.
+    *   @param[in] device A VkDevice handle.
     *   @param[in] source A vector of characters containing SPIR-V source.
     *   @since Indev 
     */
